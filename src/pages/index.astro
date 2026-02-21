@@ -1,0 +1,245 @@
+---
+import gameScript from '../scripts/game.js?url';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Get Your Fiber!</title>
+    <style>
+      :root {
+        --bg: #f4efe3;
+        --panel: #fffdf7;
+        --ink: #222018;
+        --accent: #1f8a66;
+        --accent-2: #e57b38;
+        --line: #d5c9ae;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100svh;
+        font-family: "Trebuchet MS", "Avenir Next", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 15% 20%, #ffebc8 0%, #ffebc800 35%),
+          radial-gradient(circle at 90% 8%, #c6f2dd 0%, #c6f2dd00 34%),
+          linear-gradient(160deg, #f4efe3 0%, #fbe2c8 100%);
+      }
+
+      main {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0.75rem 1rem 1rem;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.4rem, 4vw, 2.1rem);
+        letter-spacing: 0.03em;
+      }
+
+      .header-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 0.8rem;
+      }
+
+      .header-copy {
+        min-width: 0;
+      }
+
+      .header-actions {
+        justify-self: end;
+        align-self: start;
+      }
+
+      .lead {
+        margin: 0.4rem 0 1rem;
+        font-size: 0.97rem;
+      }
+
+      .hud {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 14px;
+        padding: 0.85rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .hud p {
+        margin: 0;
+        font-size: 0.95rem;
+        overflow-wrap: anywhere;
+      }
+
+      #statusLine {
+        display: inline-block;
+        max-width: 100%;
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.65rem;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 0.75rem;
+      }
+
+      label {
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+
+      select,
+      button {
+        border: 2px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        font: inherit;
+        padding: 0.45rem 0.65rem;
+      }
+
+      button {
+        color: #fff;
+        background: var(--accent-2);
+        border-color: #cc5f1d;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button:hover {
+        filter: brightness(1.05);
+      }
+
+      .mode-btn {
+        background: linear-gradient(135deg, #3a2f7a, #6a2fa2 55%, #da4d8f);
+        border-color: #2d1d66;
+        white-space: nowrap;
+      }
+
+      .mode-btn.active {
+        background: linear-gradient(135deg, #ffd84f, #ff8c42 55%, #ff4f93);
+        border-color: #b5531f;
+      }
+
+      .canvas-wrap {
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+        background: #cde7ff;
+        width: 100%;
+      }
+
+      canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        touch-action: none;
+      }
+
+      .aim-hint {
+        margin: 0.6rem 0 0;
+        padding: 0.5rem 0.7rem;
+        background: var(--panel);
+        border: 2px solid var(--line);
+        border-radius: 10px;
+        font-size: 0.92rem;
+      }
+
+      footer {
+        margin-top: 0.75rem;
+        font-size: 0.82rem;
+      }
+
+      @media (max-width: 700px) {
+        .hud {
+          grid-template-columns: 1fr;
+        }
+
+        .header-row {
+          grid-template-columns: 1fr;
+        }
+
+        .header-actions {
+          justify-self: end;
+        }
+      }
+
+      body.disco-theme {
+        color: #f5efff;
+        background:
+          radial-gradient(circle at 20% 18%, #412380 0%, #41238000 32%),
+          radial-gradient(circle at 80% 14%, #0ea08c 0%, #0ea08c00 36%),
+          linear-gradient(170deg, #0d0d25 0%, #1a1238 45%, #2a0f32 100%);
+      }
+
+      body.disco-theme .hud,
+      body.disco-theme .aim-hint,
+      body.disco-theme select,
+      body.disco-theme #statusLine,
+      body.disco-theme #itemSelect {
+        background: #1c1a33;
+        border-color: #49407c;
+        color: #f5efff;
+      }
+
+      body.disco-theme .canvas-wrap {
+        border-color: #5a4fa8;
+      }
+
+      body.disco-theme .lead,
+      body.disco-theme footer {
+        color: #d8d2f1;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="header-row">
+        <div class="header-copy">
+          <h1>Get Your Fiber!</h1>
+          <p class="lead">Start your drag on the slingshot ring, pull away from the highlighted face, and release to launch.</p>
+        </div>
+        <div class="header-actions">
+          <button id="discoBtn" type="button" class="mode-btn" aria-pressed="false">Disco Mode</button>
+        </div>
+      </section>
+
+      <section class="hud" aria-live="polite">
+        <p><strong>Turn:</strong> <span id="turnLabel">Kevin Roose</span></p>
+        <p><strong>Throws Left:</strong> <span id="throwsLeft">5</span></p>
+        <p><strong>Kevin Score:</strong> <span id="scoreKevin">0</span></p>
+        <p><strong>Casey Score:</strong> <span id="scoreCasey">0</span></p>
+        <p><strong>Status:</strong> <span id="statusLine">Pull away from Kevin and release. Bigger pull = more power.</span></p>
+      </section>
+
+      <section class="controls">
+        <label for="itemSelect">Throw Item</label>
+        <select id="itemSelect"></select>
+        <button id="resetBtn" type="button">Reset Game</button>
+      </section>
+
+      <div class="canvas-wrap">
+        <canvas id="gameCanvas" width="1600" height="900" role="img" aria-label="Canvas game area"></canvas>
+      </div>
+      <p id="aimHint" class="aim-hint">Start on the glowing slingshot ring, pull away from the highlighted player, and release.</p>
+
+      <footer>Unofficial fan project. Not affiliated with Hard Fork or The New York Times.</footer>
+    </main>
+
+    <script type="module" src={gameScript}></script>
+  </body>
+</html>
