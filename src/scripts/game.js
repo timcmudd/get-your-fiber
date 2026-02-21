@@ -27,7 +27,7 @@ const ITEMS = [
 const opponents = [
   {
     id: 'kevin',
-    name: 'Kevin Roose',
+    name: 'Kevin',
     shortName: 'Kevin',
     direction: -1,
     baseX: 230,
@@ -49,7 +49,7 @@ const opponents = [
   },
   {
     id: 'casey',
-    name: 'Casey Newton',
+    name: 'Casey',
     shortName: 'Casey',
     direction: 1,
     baseX: 730,
