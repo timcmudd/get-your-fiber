@@ -2,6 +2,9 @@
   "name": "get-your-fiber",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=20.10.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "dev:local": "astro dev --host 127.0.0.1 --port 4321",
